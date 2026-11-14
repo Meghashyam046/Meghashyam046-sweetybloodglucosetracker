@@ -1,0 +1,6 @@
+{
+  "name": "Sweety – Blood Glucose Tracker",
+  "description": "A blood glucose tracking web application where patients log up to 4 daily readings and view daily, month-to-date, and monthly reports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

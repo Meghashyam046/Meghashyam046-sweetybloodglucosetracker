@@ -1,0 +1,88 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "Registered patient or doctor account with bcrypt-hashed password",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100,
+          "description": "Display name of the patient or doctor"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "maxLength": 200,
+          "description": "Unique lowercase email address"
+        },
+        "passwordHash": {
+          "type": "string",
+          "description": "Bcrypt password hash"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["patient", "doctor"],
+          "description": "Account role"
+        },
+        "assignedDoctorId": {
+          "type": "string",
+          "description": "Optional assigned doctor user ID for patient accounts"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when account was created"
+        }
+      },
+      "required": ["name", "email", "passwordHash", "role", "createdAt"]
+    },
+    "reading": {
+      "title": "Glucose Reading",
+      "description": "Single blood glucose measurement in mg/dl for a patient, date, and time slot",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Owner patient user ID"
+        },
+        "date": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+          "description": "Local calendar date in YYYY-MM-DD format"
+        },
+        "slot": {
+          "type": "string",
+          "enum": ["morning_fasting", "after_breakfast", "after_lunch", "after_dinner"],
+          "description": "Time slot for the reading"
+        },
+        "value": {
+          "type": "integer",
+          "description": "Blood glucose value in mg/dl (whole number between 40 and 600)"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when reading was created"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO timestamp when reading was last updated"
+        }
+      },
+      "required": ["userId", "date", "slot", "value", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "Collection of patient and doctor user accounts"
+    },
+    "/readings/{readingId}": {
+      "schema": "reading",
+      "description": "Collection of blood glucose readings indexed by patient userId, date, and slot"
+    }
+  }
+}
