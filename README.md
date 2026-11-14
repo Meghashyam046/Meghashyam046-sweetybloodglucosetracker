@@ -38,7 +38,14 @@ A blood glucose tracking web application built with **React (TypeScript), Node.j
 ## Persistence Assumption & Database Adapter
 
 - **Local / Docker (`DATABASE_URL` or `PGHOST` set)**: `backend/db/store.ts` selects `PgStore` (`pg.Pool`), auto-initializes the `users` and `readings` tables with `CHECK` and `UNIQUE (user_id, date, slot)` constraints, and stores all records in PostgreSQL.
-- **AI Studio Preview (when Cloud SQL is not enabled)**: `backend/db/store.ts` automatically uses `FirestoreStore` backed by the workspace's provisioned Cloud Firestore instance (`firebase-applet-config.json`), keeping the exact same repository contract (`DataStore`) so all features, bcrypt hashing, and per-user data isolation work seamlessly.
+- ** Data Storage
+
+The application uses a repository-based data layer (`DataStore`) for persistence.
+
+- Development: Local JSON storage (`backend/db/store.ts`)
+- Production: Cloud Firestore (optional)
+
+This abstraction keeps the application logic independent of the underlying database implementation.
 - **Tests (`NODE_ENV=test`)**: Uses `MemoryStore` for fast, deterministic unit and Supertest API tests.
 
 ---
